@@ -14,7 +14,7 @@ type clock struct {
 }
 
 func (m clock) Init() tea.Cmd {
-	return tickCmd()
+	return tickEvery()
 }
 
 func (m clock) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -30,7 +30,7 @@ func (m clock) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tickMsg:
 		m.t++
 		time.Sleep(time.Microsecond * 100)
-		return m, tickCmd()
+		return m, tickEvery()
 	}
 	return m, nil
 }
@@ -54,8 +54,8 @@ func main() {
 
 type tickMsg time.Time
 
-func tickCmd() tea.Cmd {
-	return tea.Tick(time.Second*1, func(t time.Time) tea.Msg {
+func tickEvery() tea.Cmd {
+	return tea.Every(time.Second*1, func(t time.Time) tea.Msg {
 		return tickMsg(t)
 	})
 }
